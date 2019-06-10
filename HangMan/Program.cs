@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace HangMan
 {
@@ -11,9 +12,9 @@ namespace HangMan
             while(keepGameAlive)
             {
                 string selection;
-                string wordString = "";
+                string secretWord = "";
 
-                Console.Write("-----Hang Man-----\n\nThe difficulty levels are:\n1. Easy\n2. Medium\n3. Hard\n\nChose a difficulty level or type 'q' to quit: ");
+                Console.Write("-----Hang Man-----\n\nThe difficulty levels are:\n1. Easy\n2. Medium\n3. Hard\n\nChoose a difficulty level or type 'q' to quit: ");
 
                 selection = Console.ReadLine();
 
@@ -21,20 +22,21 @@ namespace HangMan
                 {
                     case "1":
                     case "easy":
-                        wordString = WordPickEasy();
+                        secretWord = WordPickEasy();
                         break;
                     case "2":
                     case "medium":
-                        wordString = WordPickMedium();
+                        secretWord = WordPickMedium();
                         break;
                     case "3":
                     case "hard":
-                        wordString = WordPickHard();
+                        secretWord = WordPickHard();
                         break;
                     case "q":
                     case "quit":
                         keepGameAlive = false;
                         break;
+                    case "easteregg":
                     case "easter egg":
                         Console.WriteLine("The creator of this version of the game Hangman is Alex Stegmayr and he is awesome! ;P");
                         break;
@@ -43,13 +45,88 @@ namespace HangMan
                         break;
                 }
 
-                char[] wordArray = new char[wordString.Length];
+                bool win = false;
+                int guessesLeft = 10;
+                var incorrectGuesses = new StringBuilder();
+                char[] correctGuesses = new char[secretWord.Length];
 
-                for (int iWordArray = 0; iWordArray < wordArray.Length; iWordArray++)
+
+                for (int iCorrectGuesses = 0; iCorrectGuesses < correctGuesses.Length; iCorrectGuesses++)
                 {
-                    Console.Write('*');
+                    correctGuesses[iCorrectGuesses] = '_';
                 }
 
+                Console.Write($"\nYour secret word has been set and we are now ready to start. You have 10 guesses in total to find the word and remember that if you guess for a word it will count as a guess aswell. Letts go!\n\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)}\n\nMake a guess: ");
+
+                do
+                {
+                    string inputString;
+                    char inputChar;
+
+
+                    inputString = Console.ReadLine().ToUpper().Trim();
+
+                    if (inputString.Length == 0)
+                    {
+                        Console.WriteLine("Your guess was empty. Try again!");
+                        continue;
+                    }
+                    else if(inputString.Length == 1)
+                    {
+                        inputChar = inputString[0];
+
+                        bool wasGuessCorrect = TryInputToCorrectGuesses(correctGuesses, secretWord, inputChar);
+                        bool oldGuess = TryInputToIncorrectGuesses(incorrectGuesses, inputChar);
+
+                        if(wasGuessCorrect && !oldGuess)
+                        {
+                            correctGuesses = ChangeCorrectGuessesToInput(correctGuesses, secretWord, inputChar);
+                            Console.WriteLine("Your guess was correct.");
+
+
+                            guessesLeft--;
+                        }
+                        else if(!oldGuess && !wasGuessCorrect)
+                        {
+                            incorrectGuesses.Append(inputChar + " ");
+                            Console.WriteLine("Your guess was incorrect.");
+                            guessesLeft--;
+                        }
+                        else
+                        {
+                            Console.WriteLine("You have allready tryed that letter before. Try again!");
+                        }                        
+                        
+                    }
+                    else if(inputString == secretWord)
+                    {
+                        win = true;
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You guessed a full word and it was incorrect!");
+                        guessesLeft--;
+                    }
+
+                    if(secretWord.Equals(correctGuesses.ToString()))
+                    {
+                        win = true;
+                    }
+
+                    Console.Write($"\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)} and so far you have guessed: {incorrectGuesses}\n\nMake a guess: ");
+
+                } while (guessesLeft > 0 || !win);
+
+                if(guessesLeft > 0)
+                {
+                    Console.WriteLine($"Congratulations! You have won the game. The correct word was {secretWord} and you managed to find that out with {guessesLeft} guesses left. Good for you!");
+                }
+                else
+                {
+                    Console.WriteLine("Game Over! You lost.");
+                }
+                
                 Console.WriteLine();
                 Console.ReadKey();
                 Console.Clear();
@@ -63,6 +140,7 @@ namespace HangMan
             wordList[0] = "CAT";
             wordList[1] = "AIR";
             wordList[2] = "HAPPY";
+            wordList[3] = "NULL";
             wordList[4] = "DRUM";
             wordList[5] = "KISS";
             wordList[6] = "LOVE";
@@ -121,6 +199,51 @@ namespace HangMan
             string wordString = wordList[iWordList];
 
             return wordString;
+        }
+
+        static bool TryInputToCorrectGuesses(char[] correctGuesses, string secretWord, char inputChar)
+        {
+            bool guessWasRight = false;
+
+            for (int iCorrectGuesses = 0; iCorrectGuesses < correctGuesses.Length; iCorrectGuesses++)
+            {
+                if (inputChar == secretWord[iCorrectGuesses])
+                {
+                    guessWasRight = true;
+                    break;
+                }
+            }
+
+            return guessWasRight;
+        }
+
+        static bool TryInputToIncorrectGuesses(StringBuilder incorrectGuesses, char inputChar)
+        {
+            bool oldGuess = false;
+
+            for(int iIncorrectGuesses = 0; iIncorrectGuesses < incorrectGuesses.Length; iIncorrectGuesses++)
+            {
+                if(inputChar == incorrectGuesses[iIncorrectGuesses])
+                {
+                    oldGuess = true;
+                    break;
+                }
+            }
+
+            return oldGuess;
+        }
+
+        static char[] ChangeCorrectGuessesToInput(char[] correctGuesses, string secretWord, char inputChar)
+        {
+            for (int iCorrectGuesses = 0; iCorrectGuesses < correctGuesses.Length; iCorrectGuesses++)
+            {
+                if (inputChar == secretWord[iCorrectGuesses])
+                {
+                    correctGuesses[iCorrectGuesses] = inputChar;
+                }
+            }
+
+            return correctGuesses;
         }
 
     } // End of class
