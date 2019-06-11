@@ -83,7 +83,6 @@ namespace HangMan
                             correctGuesses = ChangeCorrectGuessesToInput(correctGuesses, secretWord, inputChar);
                             Console.WriteLine("Your guess was correct.");
 
-
                             guessesLeft--;
                         }
                         else if(!oldGuess && !wasGuessCorrect)
@@ -98,10 +97,10 @@ namespace HangMan
                         }                        
                         
                     }
-                    else if(inputString == secretWord)
+                    else if(secretWord.Equals(inputString))
                     {
                         win = true;
-                        continue;
+                        break;
                     }
                     else
                     {
@@ -109,18 +108,19 @@ namespace HangMan
                         guessesLeft--;
                     }
 
-                    if(secretWord.Equals(correctGuesses.ToString()))
+                    if(secretWord.Equals(ArrayToString(correctGuesses)))
                     {
                         win = true;
+                        break;
                     }
 
                     Console.Write($"\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)} and so far you have guessed: {incorrectGuesses}\n\nMake a guess: ");
 
-                } while (guessesLeft > 0 || !win);
+                } while (guessesLeft > 0);
 
-                if(guessesLeft > 0)
+                if(win)
                 {
-                    Console.WriteLine($"Congratulations! You have won the game. The correct word was {secretWord} and you managed to find that out with {guessesLeft} guesses left. Good for you!");
+                    Console.WriteLine($"Congratulations, you won the game! The correct word was {secretWord} and you managed to find that out with {guessesLeft} guesses left. Good for you :)");
                 }
                 else
                 {
@@ -244,6 +244,18 @@ namespace HangMan
             }
 
             return correctGuesses;
+        }
+
+        static string ArrayToString(char[] charArray) //Because Char[].ToString() dosen´t give the value in side the array but pressents the name System.Char[] instead. 
+        {
+            StringBuilder arrayInStringBuilder = new StringBuilder();
+
+            for(int i = 0; i < charArray.Length; i++)
+            {
+                arrayInStringBuilder.Append(charArray[i]);
+            }
+
+            return arrayInStringBuilder.ToString();
         }
 
     } // End of class
