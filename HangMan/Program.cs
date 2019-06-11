@@ -3,13 +3,13 @@ using System.Text;
 
 namespace HangMan
 {
-    class Program
+    public class Program
     {
         public static void Main(string[] args)
         {
             bool keepGameAlive = true;
 
-            while(keepGameAlive)
+            while (keepGameAlive)
             {
                 string selection;
                 string secretWord = "";
@@ -34,7 +34,7 @@ namespace HangMan
                         break;
                     case "q":
                     case "quit":
-                        keepGameAlive = false;                       
+                        keepGameAlive = false;
                         break;
                     default:
                         Console.WriteLine("Thats not a valid option!");
@@ -51,7 +51,7 @@ namespace HangMan
                     correctGuesses[iCorrectGuesses] = '_';
                 }
 
-                if(keepGameAlive)
+                if (keepGameAlive)
                 {
                     Console.Write($"\nYour secret word has been set and we are now ready to start. You have 10 guesses in total to find the word and remember that if you guess for a word it will count as a guess aswell. Letts go!\n\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)}\n\nMake a guess: ");
                 }
@@ -69,21 +69,21 @@ namespace HangMan
                         Console.WriteLine("Your guess was empty. Try again!");
                         continue;
                     }
-                    else if(inputString.Length == 1)
+                    else if (inputString.Length == 1)
                     {
                         inputChar = inputString[0];
 
                         bool wasGuessCorrect = TryInputToCorrectGuesses(correctGuesses, secretWord, inputChar);
                         bool oldGuess = TryInputToIncorrectGuesses(incorrectGuesses, inputChar);
 
-                        if(wasGuessCorrect && !oldGuess)
+                        if (wasGuessCorrect && !oldGuess)
                         {
-                            correctGuesses = ChangeCorrectGuessesToInput(correctGuesses, secretWord, inputChar);
+                            correctGuesses = AddInputToCorrectGuesses(correctGuesses, secretWord, inputChar);
                             Console.WriteLine("Your guess was correct.");
 
                             guessesLeft--;
                         }
-                        else if(!oldGuess && !wasGuessCorrect)
+                        else if (!oldGuess && !wasGuessCorrect)
                         {
                             incorrectGuesses.Append(inputChar + " ");
                             Console.WriteLine("Your guess was incorrect.");
@@ -92,10 +92,10 @@ namespace HangMan
                         else
                         {
                             Console.WriteLine("You have allready tryed that letter before. Try again!");
-                        }                        
-                        
+                        }
+
                     }
-                    else if(secretWord.Equals(inputString))
+                    else if (secretWord.Equals(inputString))
                     {
                         win = true;
                         break;
@@ -106,7 +106,7 @@ namespace HangMan
                         guessesLeft--;
                     }
 
-                    if(secretWord.Equals(ArrayToString(correctGuesses)))
+                    if (secretWord.Equals(ArrayToString(correctGuesses)))
                     {
                         win = true;
                         break;
@@ -115,12 +115,12 @@ namespace HangMan
                     Console.Write($"\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)} and so far you have guessed: {incorrectGuesses}\n\nMake a guess: ");
 
                 }
-                             
+
                 if (win && keepGameAlive)
                 {
                     Console.Write($"\nCongratulations, you won the game!!!\nThe correct word was {secretWord} and you managed to find that out with {guessesLeft} guesses left.\nGood for you :)");
                 }
-                else if(!win && keepGameAlive)
+                else if (!win && keepGameAlive)
                 {
                     Console.Write("\nGame Over! You lost.");
                 }
@@ -128,7 +128,7 @@ namespace HangMan
                 {
                     Console.Write("\nYou have choosen to quit. Bye bye!");
                 }
-                
+
                 Console.WriteLine();
                 Console.ReadKey();
                 Console.Clear();
@@ -142,7 +142,7 @@ namespace HangMan
             wordList[0] = "CAT";
             wordList[1] = "AIR";
             wordList[2] = "HAPPY";
-            wordList[3] = "NULL";
+            wordList[3] = "STOP";
             wordList[4] = "DRUM";
             wordList[5] = "KISS";
             wordList[6] = "LOVE";
@@ -177,7 +177,7 @@ namespace HangMan
 
             string wordString = wordList[iWordList];
 
-            return wordString;           
+            return wordString;
         }
 
         public static string WordPickHard()
@@ -222,9 +222,9 @@ namespace HangMan
         {
             bool oldGuess = false;
 
-            for(int iIncorrectGuesses = 0; iIncorrectGuesses < incorrectGuesses.Length; iIncorrectGuesses++)
+            for (int iIncorrectGuesses = 0; iIncorrectGuesses < incorrectGuesses.Length; iIncorrectGuesses++)
             {
-                if(inputChar == incorrectGuesses[iIncorrectGuesses])
+                if (inputChar == incorrectGuesses[iIncorrectGuesses])
                 {
                     oldGuess = true;
                     break;
@@ -234,7 +234,7 @@ namespace HangMan
             return oldGuess;
         }
 
-        public static char[] ChangeCorrectGuessesToInput(char[] correctGuesses, string secretWord, char inputChar)
+        public static char[] AddInputToCorrectGuesses(char[] correctGuesses, string secretWord, char inputChar)
         {
             for (int iCorrectGuesses = 0; iCorrectGuesses < correctGuesses.Length; iCorrectGuesses++)
             {
@@ -251,7 +251,7 @@ namespace HangMan
         {
             StringBuilder arrayInStringBuilder = new StringBuilder();
 
-            for(int i = 0; i < charArray.Length; i++)
+            for (int i = 0; i < charArray.Length; i++)
             {
                 arrayInStringBuilder.Append(charArray[i]);
             }
