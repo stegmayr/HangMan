@@ -36,10 +36,6 @@ namespace HangMan
                     case "quit":
                         keepGameAlive = false;                       
                         break;
-                    case "easteregg":
-                    case "easter egg":
-                        Console.WriteLine("The creator of this version of the game Hangman is Alex Stegmayr and he is awesome! ;P");
-                        break;
                     default:
                         Console.WriteLine("Thats not a valid option!");
                         break;
