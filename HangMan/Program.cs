@@ -5,7 +5,7 @@ namespace HangMan
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             bool keepGameAlive = true;
 
@@ -115,9 +115,7 @@ namespace HangMan
                     Console.Write($"\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)} and so far you have guessed: {incorrectGuesses}\n\nMake a guess: ");
 
                 }
-
-               
-                
+                             
                 if (win && keepGameAlive)
                 {
                     Console.Write($"\nCongratulations, you won the game!!!\nThe correct word was {secretWord} and you managed to find that out with {guessesLeft} guesses left.\nGood for you :)");
@@ -138,7 +136,7 @@ namespace HangMan
             }
 
         }
-        static string WordPickEasy()
+        public static string WordPickEasy()
         {
             string[] wordList = new string[10];
             wordList[0] = "CAT";
@@ -160,7 +158,7 @@ namespace HangMan
             return wordString;
         }
 
-        static string WordPickMedium()
+        public static string WordPickMedium()
         {
             string[] wordList = new string[10];
             wordList[0] = "JAZZ";
@@ -182,7 +180,7 @@ namespace HangMan
             return wordString;           
         }
 
-        static string WordPickHard()
+        public static string WordPickHard()
         {
             string[] wordList = new string[10];
             wordList[0] = "MONKEY";
@@ -204,7 +202,7 @@ namespace HangMan
             return wordString;
         }
 
-        static bool TryInputToCorrectGuesses(char[] correctGuesses, string secretWord, char inputChar)
+        public static bool TryInputToCorrectGuesses(char[] correctGuesses, string secretWord, char inputChar)
         {
             bool guessWasRight = false;
 
@@ -220,7 +218,7 @@ namespace HangMan
             return guessWasRight;
         }
 
-        static bool TryInputToIncorrectGuesses(StringBuilder incorrectGuesses, char inputChar)
+        public static bool TryInputToIncorrectGuesses(StringBuilder incorrectGuesses, char inputChar)
         {
             bool oldGuess = false;
 
@@ -236,7 +234,7 @@ namespace HangMan
             return oldGuess;
         }
 
-        static char[] ChangeCorrectGuessesToInput(char[] correctGuesses, string secretWord, char inputChar)
+        public static char[] ChangeCorrectGuessesToInput(char[] correctGuesses, string secretWord, char inputChar)
         {
             for (int iCorrectGuesses = 0; iCorrectGuesses < correctGuesses.Length; iCorrectGuesses++)
             {
@@ -249,7 +247,7 @@ namespace HangMan
             return correctGuesses;
         }
 
-        static string ArrayToString(char[] charArray) // Because Char[].ToString() dosen´t give the value inside the array but pressents the name System.Char[] instead. 
+        public static string ArrayToString(char[] charArray) // Because Char[].ToString() dosen´t give the value inside the array but pressents the name System.Char[] instead. 
         {
             StringBuilder arrayInStringBuilder = new StringBuilder();
 
