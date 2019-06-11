@@ -14,7 +14,7 @@ namespace HangMan
                 string selection;
                 string secretWord = "";
 
-                Console.Write("-----Hang Man-----\n\nThe difficulty levels are:\n1. Easy\n2. Medium\n3. Hard\n\nChoose a difficulty level or type 'q' to quit: ");
+                Console.Write("\n-----Hang Man-----\n\nThe difficulty levels are:\n1. Easy\n2. Medium\n3. Hard\n\nChoose a difficulty level or type 'q' to quit: ");
 
                 selection = Console.ReadLine();
 
@@ -163,6 +163,28 @@ namespace HangMan
         static string WordPickMedium()
         {
             string[] wordList = new string[10];
+            wordList[0] = "JAZZ";
+            wordList[1] = "IVY";
+            wordList[2] = "PIXEL";
+            wordList[3] = "ONYX";
+            wordList[4] = "SHIV";
+            wordList[5] = "UNZIP";
+            wordList[6] = "TOPAZ";
+            wordList[7] = "ZIPPER";
+            wordList[8] = "WAXY";
+            wordList[9] = "JINX";
+
+            Random randomWordPick = new Random();
+            int iWordList = randomWordPick.Next(wordList.Length);
+
+            string wordString = wordList[iWordList];
+
+            return wordString;           
+        }
+
+        static string WordPickHard()
+        {
+            string[] wordList = new string[10];
             wordList[0] = "MONKEY";
             wordList[1] = "BREEZE";
             wordList[2] = "MEMORY";
@@ -173,29 +195,6 @@ namespace HangMan
             wordList[7] = "SHALLOW";
             wordList[8] = "GARAGE";
             wordList[9] = "REQUIRE";
-
-            Random randomWordPick = new Random();
-            int iWordList = randomWordPick.Next(wordList.Length);
-
-            string wordString = wordList[iWordList];
-
-            return wordString;
-        }
-
-        static string WordPickHard()
-        {
-            string[] wordList = new string[11];
-            wordList[0] = "JAZZ";
-            wordList[1] = "IVY";
-            wordList[2] = "PIXEL";
-            wordList[3] = "ONYX";
-            wordList[4] = "SHIV";
-            wordList[5] = "UNZIP";
-            wordList[6] = "TOPAZ";
-            wordList[7] = "ZIPPER";
-            wordList[8] = "VOODOO";
-            wordList[9] = "WAXY";
-            wordList[10] = "JINX";
 
             Random randomWordPick = new Random();
             int iWordList = randomWordPick.Next(wordList.Length);
