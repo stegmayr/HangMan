@@ -34,7 +34,7 @@ namespace HangMan
                         break;
                     case "q":
                     case "quit":
-                        keepGameAlive = false;
+                        keepGameAlive = false;                       
                         break;
                     case "easteregg":
                     case "easter egg":
@@ -50,15 +50,17 @@ namespace HangMan
                 var incorrectGuesses = new StringBuilder();
                 char[] correctGuesses = new char[secretWord.Length];
 
-
                 for (int iCorrectGuesses = 0; iCorrectGuesses < correctGuesses.Length; iCorrectGuesses++)
                 {
                     correctGuesses[iCorrectGuesses] = '_';
                 }
 
-                Console.Write($"\nYour secret word has been set and we are now ready to start. You have 10 guesses in total to find the word and remember that if you guess for a word it will count as a guess aswell. Letts go!\n\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)}\n\nMake a guess: ");
+                if(keepGameAlive)
+                {
+                    Console.Write($"\nYour secret word has been set and we are now ready to start. You have 10 guesses in total to find the word and remember that if you guess for a word it will count as a guess aswell. Letts go!\n\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)}\n\nMake a guess: ");
+                }
 
-                do
+                while (guessesLeft > 0 && keepGameAlive)
                 {
                     string inputString;
                     char inputChar;
@@ -116,15 +118,21 @@ namespace HangMan
 
                     Console.Write($"\nYou have {guessesLeft} guesses left! \n{String.Join(" ", correctGuesses)} and so far you have guessed: {incorrectGuesses}\n\nMake a guess: ");
 
-                } while (guessesLeft > 0);
+                }
 
-                if(win)
+               
+                
+                if (win && keepGameAlive)
                 {
-                    Console.WriteLine($"Congratulations, you won the game! The correct word was {secretWord} and you managed to find that out with {guessesLeft} guesses left. Good for you :)");
+                    Console.Write($"\nCongratulations, you won the game!!!\nThe correct word was {secretWord} and you managed to find that out with {guessesLeft} guesses left.\nGood for you :)");
+                }
+                else if(!win && keepGameAlive)
+                {
+                    Console.Write("\nGame Over! You lost.");
                 }
                 else
                 {
-                    Console.WriteLine("Game Over! You lost.");
+                    Console.Write("\nYou have choosen to quit. Bye bye!");
                 }
                 
                 Console.WriteLine();
@@ -144,7 +152,7 @@ namespace HangMan
             wordList[4] = "DRUM";
             wordList[5] = "KISS";
             wordList[6] = "LOVE";
-            wordList[7] = "HATT";
+            wordList[7] = "HAT";
             wordList[8] = "DANCE";
             wordList[9] = "SNOW";
 
