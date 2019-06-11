@@ -246,7 +246,7 @@ namespace HangMan
             return correctGuesses;
         }
 
-        static string ArrayToString(char[] charArray) //Because Char[].ToString() dosen´t give the value in side the array but pressents the name System.Char[] instead. 
+        static string ArrayToString(char[] charArray) // Because Char[].ToString() dosen´t give the value inside the array but pressents the name System.Char[] instead. 
         {
             StringBuilder arrayInStringBuilder = new StringBuilder();
 
