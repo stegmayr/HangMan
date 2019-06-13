@@ -55,7 +55,7 @@ namespace HangManTest
         [InlineData(new char[] { 'S', 'H', 'A', 'L', 'L', 'O', 'W' }, "SHALLOW", 'L')]
         public void TestTryInputToCorrectGuessesCorrectGuess(char[] correctGuesses, string secretWord, char inputChar)
         {
-            bool result = HangMan.Program.TryInputToCorrectGuesses(correctGuesses, secretWord, inputChar);
+            bool result = HangMan.Program.IsGuessCorrect(correctGuesses, secretWord, inputChar);
 
             Assert.True(result);
         }
@@ -66,40 +66,40 @@ namespace HangManTest
         [InlineData(new char[] { 'S', 'H', 'A', 'L', 'L', 'O', 'W' }, "SHALLOW", 'K')]
         public void TestTryInputToCorrectGuessesIncorrectGuess(char[] correctGuesses, string secretWord, char inputChar)
         {
-            bool result = HangMan.Program.TryInputToCorrectGuesses(correctGuesses, secretWord, inputChar);
+            bool result = HangMan.Program.IsGuessCorrect(correctGuesses, secretWord, inputChar);
 
             Assert.False(result);
         }
 
         [Theory]
-        [InlineData("A F G", 'F')]
-        [InlineData("G H K L W", 'H')]
-        [InlineData("F Y W Q V X", 'Y')]
-        public void TestTryInputToIncorrectGuessesOldGuess(string incorrectGuesses, char inputChar)
+        [InlineData("A F G", 'F', new char[] { 'K', 'I', '_', '_' })]
+        [InlineData("G H L W", 'H', new char[] { 'K', '_', '_', '_' })]
+        [InlineData("F Y W Q V X", 'K', new char[] { 'K', 'I', '_', '_' })]
+        public void TestIsGuessOldTrue(string incorrectGuesses, char inputChar, char[] charArray)
         {
             StringBuilder sb = new StringBuilder(incorrectGuesses);
 
-            bool result = HangMan.Program.TryInputToIncorrectGuesses(sb, inputChar);
+            bool result = HangMan.Program.IsGuessOld(sb, inputChar, charArray);
 
             Assert.True(result);
         }
 
         [Theory]
-        [InlineData("A F G", 'E')]
-        [InlineData("G H K L W", 'Z')]
-        [InlineData("F Y W Q V X", 'P')]
-        public void TestTryInputToIncorrectGuessesNotOldGuess(string incorrectGuesses, char inputChar)
+        [InlineData("A F G", 'E', new char[] { 'K', 'I', '_', '_' })]
+        [InlineData("G H L W", 'Z', new char[] { 'K', '_', 'S', 'S' })]
+        [InlineData("F Y W Q V X", 'P', new char[] { 'K', 'I', '_', '_' })]
+        public void TestIsGuessOldFalse(string incorrectGuesses, char inputChar, char[] charArray)
         {
             StringBuilder sb = new StringBuilder(incorrectGuesses);
 
-            bool result = HangMan.Program.TryInputToIncorrectGuesses(sb, inputChar);
+            bool result = HangMan.Program.IsGuessOld(sb, inputChar, charArray);
 
             Assert.False(result);
         }
-        
+
         [Theory]
-        [InlineData(new char[] {'_', '_', '_', '_', '_' }, "HAPPY", 'P', "_ _ P P _ ")]
-        [InlineData(new char[] {'L', '_', '_', '_'}, "LOVE", 'V', "L _ V _ ")]
+        [InlineData(new char[] { '_', '_', '_', '_', '_' }, "HAPPY", 'P', "_ _ P P _ ")]
+        [InlineData(new char[] { 'L', '_', '_', '_' }, "LOVE", 'V', "L _ V _ ")]
         public void TestAddInputToCorrectGuesses(char[] correctGuesses, string secretWord, char inputChar, string expectedResult)
         {
             char[] result = HangMan.Program.AddInputToCorrectGuesses(correctGuesses, secretWord, inputChar);

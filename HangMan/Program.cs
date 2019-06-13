@@ -73,25 +73,25 @@ namespace HangMan
                     {
                         inputChar = inputString[0];
 
-                        bool wasGuessCorrect = TryInputToCorrectGuesses(correctGuesses, secretWord, inputChar);
-                        bool oldGuess = TryInputToIncorrectGuesses(incorrectGuesses, inputChar);
+                        bool wasGuessCorrect = IsGuessCorrect(correctGuesses, secretWord, inputChar);
+                        bool oldGuess = IsGuessOld(incorrectGuesses, inputChar, correctGuesses);
+                        
+                        if (oldGuess)
+                        {
+                            Console.WriteLine("You have allready tryed that letter before. Try again!");
 
-                        if (wasGuessCorrect && !oldGuess)
+                        }
+                        else if (wasGuessCorrect)
                         {
                             correctGuesses = AddInputToCorrectGuesses(correctGuesses, secretWord, inputChar);
                             Console.WriteLine("Your guess was correct.");
-
-                            guessesLeft--;
-                        }
-                        else if (!oldGuess && !wasGuessCorrect)
-                        {
-                            incorrectGuesses.Append(inputChar + " ");
-                            Console.WriteLine("Your guess was incorrect.");
                             guessesLeft--;
                         }
                         else
                         {
-                            Console.WriteLine("You have allready tryed that letter before. Try again!");
+                            incorrectGuesses.Append(inputChar + " ");
+                            Console.WriteLine("Your guess was incorrect.");
+                            guessesLeft--;
                         }
 
                     }
@@ -202,7 +202,7 @@ namespace HangMan
             return wordString;
         }
 
-        public static bool TryInputToCorrectGuesses(char[] correctGuesses, string secretWord, char inputChar)
+        public static bool IsGuessCorrect(char[] correctGuesses, string secretWord, char inputChar)
         {
             bool guessWasRight = false;
 
@@ -218,7 +218,7 @@ namespace HangMan
             return guessWasRight;
         }
 
-        public static bool TryInputToIncorrectGuesses(StringBuilder incorrectGuesses, char inputChar)
+        public static bool IsGuessOld(StringBuilder incorrectGuesses, char inputChar, char[] charArray)
         {
             bool oldGuess = false;
 
@@ -228,6 +228,14 @@ namespace HangMan
                 {
                     oldGuess = true;
                     break;
+                }
+            }
+
+            for (int i = 0; i < charArray.Length; i++)
+            {
+                if (inputChar == charArray[i])
+                {
+                    oldGuess = true;
                 }
             }
 
